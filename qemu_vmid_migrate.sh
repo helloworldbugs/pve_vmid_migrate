@@ -7,9 +7,9 @@
 # 配置文件目录
 CONFIG_DIR="/etc/pve/qemu-server"
 # 镜像文件目录
-IMAGE_BASE="/mnt/pve/smb/images"
+IMAGE_BASE="/var/lib/vz/images"
 # 备份文件目录
-BACKUP_DIR="/mnt/pve/smb/dump"
+BACKUP_DIR="/var/lib/vz/dump"
 
 ###########################|用户配置区|##################################
 
