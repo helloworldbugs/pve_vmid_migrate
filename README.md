@@ -1,6 +1,6 @@
 # 说明
 
-适用于ProxmoxVE一键修改kvm虚拟机和lxc容器的ID脚本
+适用于ProxmoxVE一键修改kvm虚拟机和lxc容器ID的脚本
 
 # 功能
 
