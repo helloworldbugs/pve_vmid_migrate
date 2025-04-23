@@ -1,6 +1,6 @@
 # 说明
 
-适用于ProxmoxVE一键修改kvm虚拟机VMID的脚本
+适用于ProxmoxVE一键修改kvm虚拟机和lxc容器的ID脚本
 
 # 功能
 
@@ -17,10 +17,14 @@
 
 # 使用方法
 
-使用bash执行
+kvm虚拟机
 
 ```
 bash qemu_vmid_migrate.sh <原id> <新id>
+```
+lxc容器
+```
+bash lxc_id_migrate.sh <原id> <新id>
 ```
 
 ps：如遇到报错，请检查是否按照要求使用bash执行，本脚本不兼容sh！！！
