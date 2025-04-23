@@ -98,8 +98,8 @@ migrate_disks() {
             fi
         done
         # 重命名父目录
-        mv "${IMAGE_BASE}/${OLD_VMID}/"* "${IMAGE_BASE}/${NEW_VMID}/" 2>/dev/null
-        rmdir "${IMAGE_BASE}/${OLD_VMID}" 2>/dev/null
+        mv "${IMAGE_BASE}/${OLD_VMID}/"* "${IMAGE_BASE}/${NEW_VMID}/"
+        rmdir "${IMAGE_BASE}/${OLD_VMID}"
     else
         echo -e "${YELLOW}[警告] 未找到原磁盘目录：${IMAGE_BASE}/${OLD_VMID}${NC}"
     fi
@@ -123,7 +123,7 @@ migrate_backups() {
     for file in vzdump-qemu-${OLD_VMID}-*; do
         if [ -f "$file" ]; then
             newfile="${file//${OLD_VMID}/${NEW_VMID}}"  # 关键替换操作
-            mv "$file" "$newfile" 2>/dev/null
+            mv "$file" "$newfile"
         fi
     done
 
