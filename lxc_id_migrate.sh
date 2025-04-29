@@ -90,7 +90,7 @@ migrate_disks() {
     if [ -d "${IMAGE_BASE}/${OLD_VMID}" ]; then
         cd "${IMAGE_BASE}/${OLD_VMID}"
         # 遍历所有旧磁盘文件并重命名
-        for file in vm-${OLD_VMID}-disk-*.raw; do
+        for file in vm-${OLD_VMID}-disk-*; do
             if [ -f "$file" ]; then
                 newfile="vm-${NEW_VMID}-disk-${file#*-${OLD_VMID}-disk-}"
                 mv "$file" "${IMAGE_BASE}/${NEW_VMID}/$newfile"
