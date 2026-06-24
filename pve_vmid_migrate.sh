@@ -322,13 +322,20 @@ migrate_config() {
         -e "s/base-${OLD_VMID}-disk/base-${NEW_VMID}-disk/g" \
         "$new_conf"
 
-    # Pattern 2: storage path (storage:X/... → storage:Y/...)
+    # Pattern 2: snapshot state files (vm-X-state-Y)
+    #   Matches only when OLD_VMID is delimited by dash
+    #   Safe: vm-10-state won't match vm-100-state
+    sed -i \
+        -e "s/vm-${OLD_VMID}-state/vm-${NEW_VMID}-state/g" \
+        "$new_conf"
+
+    # Pattern 3: storage path (storage:X/... → storage:Y/...)
     #   The ':' before VMID ensures we only match storage paths, not IPs or names
     sed -i \
         -e "s|:${OLD_VMID}/|:${NEW_VMID}/|g" \
         "$new_conf"
 
-    # Pattern 3: vmid= parameter in QEMU configs
+    # Pattern 4: vmid= parameter in QEMU configs
     if [[ "$VM_TYPE" == "qemu" ]]; then
         sed -i \
             -e "s/,vmid=${OLD_VMID}/,vmid=${NEW_VMID}/g" \
@@ -412,8 +419,12 @@ migrate_disks() {
     for disk_line in "${lines_array[@]}"; do
         IFS='|' read -r storage old_rel old_abs <<< "$disk_line"
 
-        # Build new paths
+        # Build new paths (rename VMID in filename too)
         filename="${old_rel#*/}"  # strip "VMID/" prefix
+        # Rename VMID in filename: vm-X-disk-Y → vm-Z-disk-Y, vm-X-state-Y → vm-Z-state-Y, base-X-disk-Y → base-Z-disk-Y
+        # Using dash-delimited pattern (safe: vm-10- won't match inside vm-100-)
+        filename="${filename//vm-${OLD_VMID}-/vm-${NEW_VMID}-}"
+        filename="${filename//base-${OLD_VMID}-/base-${NEW_VMID}-}"
         new_rel="${NEW_VMID}/${filename}"
         new_abs=$(resolve_storage_path "$storage" "$new_rel")
         old_dir=$(dirname "$old_abs")
